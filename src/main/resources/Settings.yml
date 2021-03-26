@@ -1,0 +1,48 @@
+####################################################################################################
+# +----------------------------------------------------------------------------------------------+ #
+# |                                                                                              | #
+# |                                      EnhancedFurnace                                         | #
+# |                                    Made by: Architetto                                       | #
+# |                                    SOURCE CODE:  ---                                         | #
+# |                                                                                              | #
+# +----------------------------------------------------------------------------------------------+ #
+####################################################################################################
+
+anhanced_furnace :
+  speed_multiplier: 0.1
+  exp_multiplier: 5
+  result_multiplier:
+    - 'IRON_INGOT,4'
+    - 'GOLD_INGOT,5'
+    - 'DIAMOND,6'
+
+need_auth: true
+
+enf_activation:
+  always: false
+  active_time_slots:
+    sun: [ 17,19 ]
+    mon:
+    tues: [ 15,17 ]
+    wed:
+    thurs:
+    fri: [ 21,22 ]
+    sat:
+
+
+strings:
+  prefix: "&8[&l&6En&4F&r&8]&r"
+
+  furnace_added: "Fornace aggiunta correttamente [&e{0}&r]"
+  furnace_removed: "Fornace rimossa correttamente [&e{0}&r]"
+
+  #ERROR MESSAGES
+  err_not_enf: "&cLa fornace indicata non e' una EnhancedFurnace"
+  err_block_not_found: "&cNessun blocco fornace trovato"
+
+  #COMMAND DESCRIPTION
+  add_command: "Rende la fornace targhettata una EnhancedFurnace"
+  remove_command: "Ripristina la fornace targhettata al suo stato classico"
+
+
+
