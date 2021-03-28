@@ -2,6 +2,7 @@ package me.architetto.enhancedfurnace.manager;
 
 import me.architetto.enhancedfurnace.obj.LightLocation;
 import org.bukkit.Location;
+import org.bukkit.block.Block;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -10,7 +11,7 @@ public class EFManager {
 
     private static EFManager instance;
 
-    private Set<LightLocation> enhancedFurnace;
+    private final Set<LightLocation> enhancedFurnace;
 
     private EFManager() {
         if(instance != null) {
@@ -36,8 +37,14 @@ public class EFManager {
         return enhancedFurnace.remove(new LightLocation(location));
     }
 
+    public boolean removeEF(Block block) {
+        return enhancedFurnace.remove(new LightLocation(block.getLocation().toCenterLocation()));
+    }
+
     public boolean isEF(Location location) {
         return enhancedFurnace.contains(new LightLocation(location));
     }
+
+
 
 }

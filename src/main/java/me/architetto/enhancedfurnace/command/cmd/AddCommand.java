@@ -54,7 +54,7 @@ public class AddCommand extends SubCommand {
         if (EFManager.getInstance().addEF(location))
             Message.FURNACE_ADDED.send(sender,new LightLocation(location).toString());
         else
-            Message.ERR_NOT_ENF.send(sender); //todo: non va bene
+            Message.ERR_IS_ENF.send(sender);
     }
 
     @Override

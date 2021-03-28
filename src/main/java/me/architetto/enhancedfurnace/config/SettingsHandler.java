@@ -13,8 +13,8 @@ public class SettingsHandler {
 
     private final HashMap<Material,Integer> outputMultiplier;
 
-    private double fuelSpeedMultiplier;
-    private double expMultiplier;
+    private double furnaceSpeedMultiplier;
+    private int expMultiplier;
 
     private SettingsHandler() {
         if(instance != null) {
@@ -36,8 +36,8 @@ public class SettingsHandler {
         FileConfiguration fc = ConfigManager.getInstance().getConfig("Settings.yml");
 
         loadOutputBoost(fc);
-        fuelSpeedMultiplier = fc.getDouble("anhanced_furnace.speed_multiplier");
-        expMultiplier = fc.getDouble("anhanced_furnace.exp_multiplier");
+        furnaceSpeedMultiplier = fc.getDouble("anhanced_furnace.speed_multiplier");
+        expMultiplier = fc.getInt("anhanced_furnace.exp_multiplier");
 
     }
 
@@ -61,12 +61,12 @@ public class SettingsHandler {
         }
     }
 
-    public double getExpMultiplier() {
+    public int getExpMultiplier() {
         return expMultiplier;
     }
 
-    public double getFuelSpeedMultiplier() {
-        return fuelSpeedMultiplier;
+    public double getFurnaceSpeedMultiplier() {
+        return furnaceSpeedMultiplier;
     }
 
     public int getOutputMultiplier(Material m) {

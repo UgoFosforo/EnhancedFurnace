@@ -9,14 +9,17 @@
 ####################################################################################################
 
 anhanced_furnace :
-  speed_multiplier: 0.1
+  default_cook_speed: 200
+  custom_cook_speed:
+    - ''
+    - ''
+    - ''
+    - ''
   exp_multiplier: 5
   result_multiplier:
-    - 'IRON_INGOT,4'
-    - 'GOLD_INGOT,5'
+    - 'IRON_INGOT,5'
+    - 'GOLD_INGOT,3'
     - 'DIAMOND,6'
-
-need_auth: true
 
 enf_activation:
   always: false
@@ -38,11 +41,15 @@ strings:
 
   #ERROR MESSAGES
   err_not_enf: "&cLa fornace indicata non e' una EnhancedFurnace"
+  err_is_enf: "&cLa fornace indicata e' già una EnhancedFurnace"
   err_block_not_found: "&cNessun blocco fornace trovato"
 
   #COMMAND DESCRIPTION
-  add_command: "Rende la fornace targhettata una EnhancedFurnace"
-  remove_command: "Ripristina la fornace targhettata al suo stato classico"
+  add_command: "&aRende la fornace targhettata una EnhancedFurnace"
+  remove_command: "&aRipristina la fornace targhettata al suo stato classico"
+
+  #LOG
+  enf_break: "Enhanced furnace removed at [&e{0}&r] by &e{1}&r"
 
 
 
