@@ -6,5 +6,7 @@ public class CommandName {
 
     public static String REMOVE_CMD = "remove";
 
+    public static String RELOAD_CMD = "reload";
+
 
 }

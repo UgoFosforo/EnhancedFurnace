@@ -16,3 +16,6 @@ permissions:
   enhancedfurnace.remove:
     description: remove enhanced furnace
     default: op
+  enhancedfurnace.reload:
+    description: reload enhanced furnace settings
+    default: op

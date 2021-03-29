@@ -11,15 +11,23 @@
 anhanced_furnace :
   default_cook_speed: 200
   custom_cook_speed:
-    - ''
-    - ''
-    - ''
-    - ''
+    - 'IRON_ORE,2000'
+    - 'GOLD_ORE,3000'
+    - 'DIAMOND_ORE,5000'
+    - 'ANCIENT_DEBRIS,7000'
   exp_multiplier: 5
   result_multiplier:
-    - 'IRON_INGOT,5'
-    - 'GOLD_INGOT,3'
+    - 'IRON_INGOT,10'
+    - 'GOLD_INGOT,5'
     - 'DIAMOND,6'
+    - 'NETHERITE_SCRAP,4'
+  default_burn_time: 50
+  custom_burn_time:
+    - 'COAL,900'
+    - 'COAL_BLOCK,8100'
+    - 'LAVA_BUCKET,20000'
+    - 'CHARCOAL,800'
+    - 'BLAZE_ROD,2500'
 
 enf_activation:
   always: false
@@ -38,6 +46,7 @@ strings:
 
   furnace_added: "Fornace aggiunta correttamente [&e{0}&r]"
   furnace_removed: "Fornace rimossa correttamente [&e{0}&r]"
+  success_reload: "File di configurazione ricaricato "
 
   #ERROR MESSAGES
   err_not_enf: "&cLa fornace indicata non e' una EnhancedFurnace"
@@ -47,6 +56,8 @@ strings:
   #COMMAND DESCRIPTION
   add_command: "&aRende la fornace targhettata una EnhancedFurnace"
   remove_command: "&aRipristina la fornace targhettata al suo stato classico"
+  reload_command: "&aRicarica il file di configurazione"
+
 
   #LOG
   enf_break: "Enhanced furnace removed at [&e{0}&r] by &e{1}&r"

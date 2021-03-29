@@ -37,12 +37,12 @@ public class EFManager {
         return enhancedFurnace.remove(new LightLocation(location));
     }
 
-    public boolean removeEF(Block block) {
-        return enhancedFurnace.remove(new LightLocation(block.getLocation().toCenterLocation()));
-    }
-
     public boolean isEF(Location location) {
         return enhancedFurnace.contains(new LightLocation(location));
+    }
+
+    public boolean isEF(Block block) {
+        return enhancedFurnace.contains(new LightLocation(block.getLocation().toCenterLocation()));
     }
 
 

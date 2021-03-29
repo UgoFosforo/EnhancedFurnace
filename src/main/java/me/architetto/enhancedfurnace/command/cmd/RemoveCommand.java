@@ -42,6 +42,9 @@ public class RemoveCommand extends SubCommand {
 
     @Override
     public void perform(Player sender, String[] args) {
+
+        //todo: -all per rimuovere tutte le enhanced furnace
+
         Block block = sender.getTargetBlock(5, TargetBlockInfo.FluidMode.NEVER);
 
         if (Objects.isNull(block) || !block.getType().equals(Material.FURNACE)) {

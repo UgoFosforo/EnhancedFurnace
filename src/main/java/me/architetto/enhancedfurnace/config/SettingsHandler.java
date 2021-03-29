@@ -12,8 +12,12 @@ public class SettingsHandler {
     private static SettingsHandler instance;
 
     private final HashMap<Material,Integer> outputMultiplier;
+    private final HashMap<Material, Integer> customCookSpeed;
+    private final HashMap<Material, Integer> customBurnTime;
 
-    private double furnaceSpeedMultiplier;
+
+    private int defaultCookSpeed;
+    private int defaultBurnTime;
     private int expMultiplier;
 
     private SettingsHandler() {
@@ -22,6 +26,8 @@ public class SettingsHandler {
         }
 
         outputMultiplier = new HashMap<>();
+        customCookSpeed = new HashMap<>();
+        customBurnTime = new HashMap<>();
 
     }
 
@@ -36,13 +42,19 @@ public class SettingsHandler {
         FileConfiguration fc = ConfigManager.getInstance().getConfig("Settings.yml");
 
         loadOutputBoost(fc);
-        furnaceSpeedMultiplier = fc.getDouble("anhanced_furnace.speed_multiplier");
-        expMultiplier = fc.getInt("anhanced_furnace.exp_multiplier");
+        loadCustomCookSpeed(fc);
+        loadCustomBurnTime(fc);
+
+        defaultCookSpeed = fc.getInt("anhanced_furnace.default_cook_speed", 200);
+        expMultiplier = fc.getInt("anhanced_furnace.exp_multiplier", 1);
+        defaultBurnTime = fc.getInt("anhanced_furnace.default_burn_time", 200);
 
     }
 
     public void reload() {
         outputMultiplier.clear();
+        customCookSpeed.clear();
+        customBurnTime.clear();
 
         ConfigManager.getInstance().reloadConfigs();
         LocalizationManager.getInstance().reload();
@@ -61,15 +73,43 @@ public class SettingsHandler {
         }
     }
 
+    private void loadCustomCookSpeed(FileConfiguration fc) {
+        List<String> outputBoostList = fc.getStringList("anhanced_furnace.custom_cook_speed");
+
+        if (!outputBoostList.isEmpty()) {
+            outputBoostList.forEach(s -> {
+                String[] value = s.split(",");
+                customCookSpeed.put(Material.getMaterial(value[0]),Integer.parseInt(value[1]));
+            });
+        }
+    }
+
+    private void loadCustomBurnTime(FileConfiguration fc) {
+        List<String> outputBoostList = fc.getStringList("anhanced_furnace.custom_burn_time");
+
+        if (!outputBoostList.isEmpty()) {
+            outputBoostList.forEach(s -> {
+                String[] value = s.split(",");
+                customBurnTime.put(Material.getMaterial(value[0]),Integer.parseInt(value[1]));
+            });
+        }
+    }
+
+
+
     public int getExpMultiplier() {
         return expMultiplier;
     }
 
-    public double getFurnaceSpeedMultiplier() {
-        return furnaceSpeedMultiplier;
-    }
-
     public int getOutputMultiplier(Material m) {
         return outputMultiplier.getOrDefault(m, 1);
+    }
+
+    public int getCookSpeed(Material m) {
+        return customCookSpeed.getOrDefault(m, defaultCookSpeed);
+    }
+
+    public int getBurnTime(Material m) {
+        return customBurnTime.getOrDefault(m, defaultBurnTime);
     }
 }

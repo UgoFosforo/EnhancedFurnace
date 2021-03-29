@@ -18,8 +18,11 @@ import org.bukkit.event.entity.EntityExplodeEvent;
 import org.bukkit.event.inventory.FurnaceBurnEvent;
 import org.bukkit.event.inventory.FurnaceExtractEvent;
 import org.bukkit.event.inventory.FurnaceSmeltEvent;
+import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.scheduler.BukkitRunnable;
+
+import java.util.Objects;
 
 public class FurnaceListener implements Listener {
 
@@ -29,7 +32,7 @@ public class FurnaceListener implements Listener {
         if (EFManager.getInstance().isEF(loc)) {
             Material material = event.getResult().getType();
             event.setResult(new ItemStack(material,SettingsHandler.getInstance().getOutputMultiplier(material)));
-            furnaceUpdate(loc);
+            furnaceCookTimeUpdater(loc);
         }
     }
 
@@ -38,10 +41,11 @@ public class FurnaceListener implements Listener {
     @EventHandler
     public void onBurnEvent(FurnaceBurnEvent event) {
         if (EFManager.getInstance().isEF(event.getBlock().getLocation().toCenterLocation())) {
+            event.setBurnTime((short) SettingsHandler.getInstance().getBurnTime(event.getFuel().getType()));
             Furnace furnace = (Furnace) event.getBlock().getState();
-            if (furnace.getCookTime() == 0) {
-                furnace.setCookTimeTotal(500);
-                furnace.update();
+            ItemStack itemStack = furnace.getInventory().getSmelting();
+            if (furnace.getCookTime() == 0 && Objects.nonNull(itemStack)) {
+                furnaceCookTimeUpdater(event.getBlock().getLocation());
             }
         }
     }
@@ -50,6 +54,17 @@ public class FurnaceListener implements Listener {
     public void onFurnaceExtractEvent(FurnaceExtractEvent event) {
         if (EFManager.getInstance().isEF(event.getBlock().getLocation().toCenterLocation())) {
             event.setExpToDrop(event.getExpToDrop() * SettingsHandler.getInstance().getExpMultiplier());
+        }
+    }
+
+    @EventHandler(priority = EventPriority.HIGH)
+    public void onEnFInventoryClick(InventoryClickEvent event) {
+        if (event.getClickedInventory() != null && event.getClickedInventory().getLocation() != null) {
+            if (EFManager.getInstance().isEF(event.getClickedInventory().getLocation().toCenterLocation())) {
+                Furnace furnace = (Furnace) event.getClickedInventory().getLocation().getBlock().getState();
+                if (furnace.getCookTime() != 0)
+                    event.setCancelled(true);
+            }
         }
     }
 
@@ -76,17 +91,19 @@ public class FurnaceListener implements Listener {
                                 event.getEntityType())));
     }
 
-    private void furnaceUpdate(Location location) {
+    private void furnaceCookTimeUpdater(Location location) {
+        //todo: re-implementare effetti particellari
         new BukkitRunnable() {
             @Override
             public void run() {
                 Furnace furnace = (Furnace) location.getBlock().getState();
-                if (furnace.getInventory().getSmelting() != null) {
-                    furnace.setCookTimeTotal(500);
+                ItemStack itemStack = furnace.getInventory().getSmelting();
+                if (Objects.nonNull(itemStack)) {
+                    furnace.setCookTimeTotal(SettingsHandler.getInstance().getCookSpeed(itemStack.getType()));
                     furnace.update();
                 }
             }
-        }.runTaskLater(EnhancedFurnace.plugin,2);
+        }.runTaskLater(EnhancedFurnace.plugin,1);
 
     }
 

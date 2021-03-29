@@ -12,6 +12,8 @@ public enum Message {
     FURNACE_ADDED("furnace_added",true),
     FURNACE_REMOVED("furnace_removed",true),
 
+    SUCCESS_RELOAD("success_reload", true),
+
     ERR_BLOCK_NOT_FOUND("err_block_not_found",true),
     ERR_IS_ENF("err_is_enf",true),
     ERR_NOT_ENF("err_not_enf",true),
@@ -19,6 +21,7 @@ public enum Message {
     //COMMAND DESCRIPTION
     ADD_COMMAND("add_command",false),
     REMOVE_COMMAND("remove_command",false),
+    RELOAD_COMMAND("reload_command",false),
 
     //LOG
     ENF_BREAK("enf_break",true);
