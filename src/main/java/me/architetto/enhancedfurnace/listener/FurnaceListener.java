@@ -14,11 +14,10 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockBreakEvent;
+import org.bukkit.event.block.BlockPistonExtendEvent;
+import org.bukkit.event.block.BlockPistonRetractEvent;
 import org.bukkit.event.entity.EntityExplodeEvent;
-import org.bukkit.event.inventory.FurnaceBurnEvent;
-import org.bukkit.event.inventory.FurnaceExtractEvent;
-import org.bukkit.event.inventory.FurnaceSmeltEvent;
-import org.bukkit.event.inventory.InventoryClickEvent;
+import org.bukkit.event.inventory.*;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.scheduler.BukkitRunnable;
 
@@ -35,8 +34,6 @@ public class FurnaceListener implements Listener {
             furnaceCookTimeUpdater(loc);
         }
     }
-
-
 
     @EventHandler
     public void onBurnEvent(FurnaceBurnEvent event) {
@@ -57,18 +54,20 @@ public class FurnaceListener implements Listener {
         }
     }
 
+
     @EventHandler(priority = EventPriority.HIGH)
     public void onEnFInventoryClick(InventoryClickEvent event) {
         if (event.getClickedInventory() != null && event.getClickedInventory().getLocation() != null) {
             if (EFManager.getInstance().isEF(event.getClickedInventory().getLocation().toCenterLocation())) {
                 Furnace furnace = (Furnace) event.getClickedInventory().getLocation().getBlock().getState();
                 if (furnace.getCookTime() != 0)
-                    event.setCancelled(true);
+                    furnaceCookTimeUpdater(furnace.getLocation().toCenterLocation());
             }
         }
     }
 
-    @EventHandler
+
+    @EventHandler(priority = EventPriority.LOWEST)
     public void onBlockBreak(BlockBreakEvent event) {
         if (EFManager.getInstance().removeEF(event.getBlock().getLocation().toCenterLocation())) {
             Bukkit.getConsoleSender()
@@ -90,6 +89,7 @@ public class FurnaceListener implements Listener {
                         .asString(new LightLocation(loc).toString(),
                                 event.getEntityType())));
     }
+
 
     private void furnaceCookTimeUpdater(Location location) {
         //todo: re-implementare effetti particellari

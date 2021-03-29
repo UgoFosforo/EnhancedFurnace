@@ -1,24 +1,25 @@
 package me.architetto.enhancedfurnace.manager;
 
+import me.architetto.enhancedfurnace.config.ConfigManager;
 import me.architetto.enhancedfurnace.obj.LightLocation;
+import org.bukkit.Bukkit;
 import org.bukkit.Location;
-import org.bukkit.block.Block;
+import org.bukkit.configuration.file.FileConfiguration;
 
-import java.util.HashSet;
-import java.util.Set;
+import java.util.HashMap;
 
 public class EFManager {
 
     private static EFManager instance;
 
-    private final Set<LightLocation> enhancedFurnace;
+    private final HashMap<LightLocation, Long> enhancedFurnaceMap;
 
     private EFManager() {
         if(instance != null) {
             throw new RuntimeException("Use getInstance() method to get the single instance of this class.");
         }
 
-        enhancedFurnace = new HashSet<>();
+        enhancedFurnaceMap = new HashMap<>();
 
     }
 
@@ -30,21 +31,41 @@ public class EFManager {
     }
 
     public boolean addEF(Location location) {
-       return enhancedFurnace.add(new LightLocation(location));
+        LightLocation ll = new LightLocation(location);
+        if (enhancedFurnaceMap.containsKey(ll))
+            return false;
+        long time = System.currentTimeMillis();
+        enhancedFurnaceMap.put(ll, time);
+        ConfigManager.getInstance().addLocation(ConfigManager.getInstance().getConfig("EnFurnace.yml"), location, "" + time);
+        return true;
     }
 
     public boolean removeEF(Location location) {
-        return enhancedFurnace.remove(new LightLocation(location));
+        LightLocation ll = new LightLocation(location);
+        if (!enhancedFurnaceMap.containsKey(ll))
+            return false;
+        ConfigManager.getInstance().setData(ConfigManager.getInstance().getConfig("EnFurnace.yml"),"" + enhancedFurnaceMap.get(ll), null);
+        enhancedFurnaceMap.remove(ll);
+        return true;
     }
 
     public boolean isEF(Location location) {
-        return enhancedFurnace.contains(new LightLocation(location));
+        return enhancedFurnaceMap.containsKey(new LightLocation(location));
     }
 
-    public boolean isEF(Block block) {
-        return enhancedFurnace.contains(new LightLocation(block.getLocation().toCenterLocation()));
+    public void loadEnF(boolean clearOld) {
+        if (clearOld)
+            enhancedFurnaceMap.clear();
+
+        ConfigManager configManager = ConfigManager.getInstance();
+        FileConfiguration fc = configManager.getConfig("EnFurnace.yml");
+
+        fc.getKeys(false).forEach(s -> enhancedFurnaceMap
+                .put(new LightLocation(configManager.getLocation(fc, s))
+                        ,Long.parseLong(s)));
+
+        Bukkit.getConsoleSender().sendMessage(enhancedFurnaceMap.toString());
+
     }
-
-
 
 }

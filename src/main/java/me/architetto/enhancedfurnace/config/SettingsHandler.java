@@ -1,5 +1,6 @@
 package me.architetto.enhancedfurnace.config;
 
+import me.architetto.enhancedfurnace.manager.EFManager;
 import me.architetto.enhancedfurnace.message.LocalizationManager;
 import org.bukkit.Material;
 import org.bukkit.configuration.file.FileConfiguration;
@@ -94,6 +95,8 @@ public class SettingsHandler {
             });
         }
     }
+
+
 
 
 

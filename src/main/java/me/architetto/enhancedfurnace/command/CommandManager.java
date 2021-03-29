@@ -1,6 +1,7 @@
 package me.architetto.enhancedfurnace.command;
 
 import me.architetto.enhancedfurnace.command.cmd.AddCommand;
+import me.architetto.enhancedfurnace.command.cmd.ReloadCommand;
 import me.architetto.enhancedfurnace.command.cmd.RemoveCommand;
 import me.architetto.enhancedfurnace.util.MessageUtil;
 import me.architetto.enhancedfurnace.util.NameUtil;
@@ -19,6 +20,7 @@ public class CommandManager implements TabExecutor{
     public CommandManager(){
         subcommands.add(new AddCommand());
         subcommands.add(new RemoveCommand());
+        subcommands.add(new ReloadCommand());
     }
 
     @SuppressWarnings("NullableProblems")

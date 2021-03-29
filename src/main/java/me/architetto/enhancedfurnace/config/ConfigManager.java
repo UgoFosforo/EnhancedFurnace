@@ -1,5 +1,6 @@
 package me.architetto.enhancedfurnace.config;
 
+import me.architetto.enhancedfurnace.obj.LightLocation;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.World;
@@ -131,9 +132,9 @@ public class ConfigManager {
             return null;
 
         World world = Bukkit.getWorld(worldName);
-        int x = getInt(conf, String.format("%s.x", path));
-        int y = getInt(conf, String.format("%s.y", path));
-        int z = getInt(conf, String.format("%s.z", path));
+        double x = getDouble(conf, String.format("%s.x", path));
+        double y = getDouble(conf, String.format("%s.y", path));
+        double z = getDouble(conf, String.format("%s.z", path));
 
         return new Location(world, x, y, z);
     }

@@ -4,6 +4,7 @@ import me.architetto.enhancedfurnace.command.CommandManager;
 import me.architetto.enhancedfurnace.config.ConfigManager;
 import me.architetto.enhancedfurnace.config.SettingsHandler;
 import me.architetto.enhancedfurnace.listener.FurnaceListener;
+import me.architetto.enhancedfurnace.manager.EFManager;
 import me.architetto.enhancedfurnace.message.LocalizationManager;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -28,7 +29,7 @@ public final class EnhancedFurnace extends JavaPlugin {
         Bukkit.getConsoleSender().sendMessage(ChatColor.YELLOW + "[]" + ChatColor.RESET + " Loading messages...");
         loadLocalization();
 
-        Bukkit.getConsoleSender().sendMessage(ChatColor.YELLOW + "[]" + ChatColor.RESET + " Loading settings...");
+        Bukkit.getConsoleSender().sendMessage(ChatColor.YELLOW + "[]" + ChatColor.RESET + " Loading Settings.yml ...");
         loadSettings();
 
         Bukkit.getConsoleSender().sendMessage(ChatColor.YELLOW + "[]" + ChatColor.RESET + " Loading commands...");
@@ -36,6 +37,9 @@ public final class EnhancedFurnace extends JavaPlugin {
 
         Bukkit.getConsoleSender().sendMessage(ChatColor.YELLOW + "[]" + ChatColor.RESET + " Loading listeners...");
         loadListeners();
+
+        Bukkit.getConsoleSender().sendMessage(ChatColor.YELLOW + "[]" + ChatColor.RESET + " Loading EnFurnace.yml ...");
+        loadEnFurnace();
 
         Bukkit.getConsoleSender().sendMessage("=============================================================");
 
@@ -63,5 +67,9 @@ public final class EnhancedFurnace extends JavaPlugin {
 
     public void loadSettings() {
         SettingsHandler.getInstance().load();
+    }
+
+    public void loadEnFurnace() {
+        EFManager.getInstance().loadEnF(false);
     }
 }
