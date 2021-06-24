@@ -9,22 +9,24 @@ public enum Message {
 
     PREFIX("prefix", false),
 
-    FURNACE_ADDED("furnace_added",true),
-    FURNACE_REMOVED("furnace_removed",true),
+    FURNACE_ADDED("furnace_added", true),
+    FURNACE_REMOVED("furnace_removed", true),
 
     SUCCESS_RELOAD("success_reload", true),
 
-    ERR_BLOCK_NOT_FOUND("err_block_not_found",true),
-    ERR_IS_ENF("err_is_enf",true),
-    ERR_NOT_ENF("err_not_enf",true),
+    ERR_BLOCK_NOT_FOUND("err_block_not_found", true),
+    ERR_IS_ENF("err_is_enf", true),
+    ERR_NOT_ENF("err_not_enf", true),
 
     //COMMAND DESCRIPTION
-    ADD_COMMAND("add_command",false),
-    REMOVE_COMMAND("remove_command",false),
-    RELOAD_COMMAND("reload_command",false),
+    ADD_COMMAND("add_command", false),
+    REMOVE_COMMAND("remove_command", false),
+    RELOAD_COMMAND("reload_command", false),
+
+    TEST_COMPONENT("test_component", true),
 
     //LOG
-    ENF_BREAK("enf_break",true);
+    ENF_BREAK("enf_break", true);
 
     private final String message;
     private final boolean showPrefix;
@@ -50,7 +52,7 @@ public enum Message {
 
     private String format(Object... objects) {
         String string = localizationManager.localize(this.message);
-        if(this.showPrefix) {
+        if (this.showPrefix) {
             string = localizationManager.localize(PREFIX.message) + " " + string;
         }
         for (int i = 0; i < objects.length; i++) {
@@ -59,6 +61,5 @@ public enum Message {
         }
         return ChatColor.translateAlternateColorCodes('&', string);
     }
-
 
 }

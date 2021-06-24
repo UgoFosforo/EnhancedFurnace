@@ -1,6 +1,5 @@
 package me.architetto.enhancedfurnace.config;
 
-import me.architetto.enhancedfurnace.manager.EFManager;
 import me.architetto.enhancedfurnace.message.LocalizationManager;
 import org.bukkit.Material;
 import org.bukkit.configuration.file.FileConfiguration;
@@ -14,12 +13,11 @@ public class SettingsHandler {
 
     private final HashMap<Material,Integer> outputMultiplier;
     private final HashMap<Material, Integer> customCookSpeed;
-    private final HashMap<Material, Integer> customBurnTime;
-
 
     private int defaultCookSpeed;
-    private int defaultBurnTime;
     private int expMultiplier;
+
+    private double setFireonBurnProbability;
 
     private SettingsHandler() {
         if(instance != null) {
@@ -28,7 +26,6 @@ public class SettingsHandler {
 
         outputMultiplier = new HashMap<>();
         customCookSpeed = new HashMap<>();
-        customBurnTime = new HashMap<>();
 
     }
 
@@ -44,18 +41,16 @@ public class SettingsHandler {
 
         loadOutputBoost(fc);
         loadCustomCookSpeed(fc);
-        loadCustomBurnTime(fc);
 
         defaultCookSpeed = fc.getInt("anhanced_furnace.default_cook_speed", 200);
         expMultiplier = fc.getInt("anhanced_furnace.exp_multiplier", 1);
-        defaultBurnTime = fc.getInt("anhanced_furnace.default_burn_time", 200);
+        setFireonBurnProbability = fc.getDouble("set_fire_on_burn_probability",-1);
 
     }
 
     public void reload() {
         outputMultiplier.clear();
         customCookSpeed.clear();
-        customBurnTime.clear();
 
         ConfigManager.getInstance().reloadConfigs();
         LocalizationManager.getInstance().reload();
@@ -85,21 +80,6 @@ public class SettingsHandler {
         }
     }
 
-    private void loadCustomBurnTime(FileConfiguration fc) {
-        List<String> outputBoostList = fc.getStringList("anhanced_furnace.custom_burn_time");
-
-        if (!outputBoostList.isEmpty()) {
-            outputBoostList.forEach(s -> {
-                String[] value = s.split(",");
-                customBurnTime.put(Material.getMaterial(value[0]),Integer.parseInt(value[1]));
-            });
-        }
-    }
-
-
-
-
-
     public int getExpMultiplier() {
         return expMultiplier;
     }
@@ -112,7 +92,7 @@ public class SettingsHandler {
         return customCookSpeed.getOrDefault(m, defaultCookSpeed);
     }
 
-    public int getBurnTime(Material m) {
-        return customBurnTime.getOrDefault(m, defaultBurnTime);
+    public double getSetFireonBurnProbability() {
+        return setFireonBurnProbability;
     }
 }

@@ -5,7 +5,14 @@ import me.architetto.enhancedfurnace.command.SubCommand;
 import me.architetto.enhancedfurnace.config.SettingsHandler;
 import me.architetto.enhancedfurnace.manager.EFManager;
 import me.architetto.enhancedfurnace.message.Message;
+import net.md_5.bungee.api.chat.ClickEvent;
+import net.md_5.bungee.api.chat.ComponentBuilder;
+import net.md_5.bungee.api.chat.HoverEvent;
+import net.md_5.bungee.api.chat.TextComponent;
+import net.md_5.bungee.api.chat.hover.content.Text;
+import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
+import org.checkerframework.checker.units.qual.C;
 
 import java.util.Collections;
 import java.util.List;
@@ -49,7 +56,6 @@ public class ReloadCommand extends SubCommand {
             EFManager.getInstance().loadEnF(true);
 
         Message.SUCCESS_RELOAD.send(sender);
-
     }
 
     @Override
