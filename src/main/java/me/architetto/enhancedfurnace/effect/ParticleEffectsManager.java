@@ -30,14 +30,24 @@ public class ParticleEffectsManager {
     public void enfHotBurnExplosion(Block block) {
         block.getWorld()
                 .playSound(block.getLocation(), Sound.ENTITY_BLAZE_SHOOT,4f,1);
-        SphereEffect sphereEffect = new SphereEffect(effectManager);
-        sphereEffect.setLocation(block.getLocation().toBlockLocation());
-        sphereEffect.radius = 0.4;
-        sphereEffect.radiusIncrease = 0.3;
-        sphereEffect.particle = Particle.FLAME;
-        sphereEffect.particles = 20;
-        sphereEffect.duration = 600;
-        sphereEffect.start();
+
+        SphereEffect sphereEffectFlame = new SphereEffect(effectManager);
+        sphereEffectFlame.setLocation(block.getLocation().toBlockLocation());
+        sphereEffectFlame.radius = 0.4;
+        sphereEffectFlame.radiusIncrease = 0.3;
+        sphereEffectFlame.particle = Particle.FLAME;
+        sphereEffectFlame.particles = 20;
+        sphereEffectFlame.duration = 600;
+        sphereEffectFlame.start();
+
+        SphereEffect sphereEffectSmoke = new SphereEffect(effectManager);
+        sphereEffectSmoke.setLocation(block.getLocation().toBlockLocation());
+        sphereEffectSmoke.radius = 0.1;
+        sphereEffectSmoke.radiusIncrease = 0.3;
+        sphereEffectSmoke.particle = Particle.CAMPFIRE_COSY_SMOKE;
+        sphereEffectSmoke.particles = 5;
+        sphereEffectSmoke.duration = 200;
+        sphereEffectSmoke.start();
     }
 
 }

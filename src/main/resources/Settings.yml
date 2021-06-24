@@ -9,18 +9,22 @@
 ####################################################################################################
 
 anhanced_furnace :
-  default_cook_speed: 200
-  set_fire_on_burn_probability: 0.2
+  # [default_cook_speed] cook speed for items without custom cook speed value (vanilla value = 200)
+  default_cook_speed: 300
+  # [set_fire_on_burn_probability] value between (0.1 , 1) .  -1 to disable
+  set_fire_on_burn_probability: -1
+  set_fire_range: 5
+  fire_duration: 5
   custom_cook_speed:
-    - 'IRON_ORE,2000'
-    - 'GOLD_ORE,3000'
-    - 'DIAMOND_ORE,5000'
-    - 'ANCIENT_DEBRIS,7000'
+    - 'IRON_ORE,800'
+    - 'GOLD_ORE,1200'
+    - 'DIAMOND_ORE,3500'
+    - 'ANCIENT_DEBRIS,5000'
   exp_multiplier: 5
   result_multiplier:
-    - 'IRON_INGOT,10'
+    - 'IRON_INGOT,5'
     - 'GOLD_INGOT,5'
-    - 'DIAMOND,6'
+    - 'DIAMOND,4'
     - 'NETHERITE_SCRAP,4'
 
 

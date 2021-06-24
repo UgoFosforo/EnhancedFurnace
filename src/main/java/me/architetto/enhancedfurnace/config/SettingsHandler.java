@@ -18,6 +18,8 @@ public class SettingsHandler {
     private int expMultiplier;
 
     private double setFireonBurnProbability;
+    private int setFireRange;
+    private int fireDuration;
 
     private SettingsHandler() {
         if(instance != null) {
@@ -44,7 +46,9 @@ public class SettingsHandler {
 
         defaultCookSpeed = fc.getInt("anhanced_furnace.default_cook_speed", 200);
         expMultiplier = fc.getInt("anhanced_furnace.exp_multiplier", 1);
-        setFireonBurnProbability = fc.getDouble("set_fire_on_burn_probability",-1);
+        setFireonBurnProbability = fc.getDouble("anhanced_furnace.set_fire_on_burn_probability",-1);
+        setFireRange = fc.getInt("anhanced_furnace.set_fire_range", 5);
+        fireDuration = fc.getInt("anhanced_furnace.fire_duration", 5) * 20;
 
     }
 
@@ -94,5 +98,13 @@ public class SettingsHandler {
 
     public double getSetFireonBurnProbability() {
         return setFireonBurnProbability;
+    }
+
+    public int getSetFireRange() {
+        return setFireRange;
+    }
+
+    public int getFireDuration() {
+        return fireDuration;
     }
 }

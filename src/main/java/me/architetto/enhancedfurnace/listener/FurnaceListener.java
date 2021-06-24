@@ -25,8 +25,15 @@ public class FurnaceListener implements Listener {
         Furnace f = (Furnace) e.getBlock().getState();
 
         if (EFManager.getInstance().isEF(f.getLocation().toCenterLocation())) {
+
             Material material = e.getResult().getType();
-            e.setResult(new ItemStack(material,SettingsHandler.getInstance().getOutputMultiplier(material)));
+            ItemStack result = f.getInventory().getResult();
+            int multiplier = SettingsHandler.getInstance().getOutputMultiplier(material);
+
+            if (result == null || result.getAmount() <= 64 - multiplier)
+                e.setResult(new ItemStack(material,SettingsHandler.getInstance().getOutputMultiplier(material)));
+            else
+                e.setResult(new ItemStack(material, 64 - result.getAmount()));
         }
 
         if (f.getCookTime() == 0 && f.getCookTimeTotal() != 0) {
@@ -44,12 +51,18 @@ public class FurnaceListener implements Listener {
     public void onFurnaceBurnItem(FurnaceBurnEvent e) {
         Furnace f = (Furnace) e.getBlock().getState();
         if (f.getCookTime() == 0) {
-            //Just started to cook an item, since this tells how long it has been cooking.
-            FurnaceStartSmeltEvent event = new FurnaceStartSmeltEvent(f);
-            Bukkit.getServer().getPluginManager().callEvent(event);
+            Bukkit.getScheduler().scheduleSyncDelayedTask(EnhancedFurnace.getPlugin(EnhancedFurnace.class),
+                    () -> {
+                        Furnace furnace = (Furnace) e.getBlock().getState();
+                        FurnaceStartSmeltEvent event = new FurnaceStartSmeltEvent(furnace);
+                        Bukkit.getServer().getPluginManager().callEvent(event);
+                    },3L);
+            /*
             if (event.isCancelled()) {
                 e.setCancelled(true);
             }
+
+             */
         }
     }
 
@@ -59,25 +72,33 @@ public class FurnaceListener implements Listener {
 
         Furnace f = e.getFurnace();
         ItemStack itemStack = f.getInventory().getSmelting();
+
         if (itemStack == null) return;
+
         f.setCookTimeTotal(SettingsHandler.getInstance().getCookSpeed(itemStack.getType()));
         f.update();
 
+        SettingsHandler settingsHandler = SettingsHandler.getInstance();
+
         if (EFManager.getInstance().isEF(f.getLocation().toCenterLocation())
-                && new Random().nextDouble() < SettingsHandler.getInstance().getSetFireonBurnProbability()) {
-            f.getLocation().getNearbyPlayers(5).forEach(player -> player.setFireTicks(100));
+                && new Random().nextDouble() < settingsHandler.getSetFireonBurnProbability()) {
+
+            int fireDuration = settingsHandler.getFireDuration();
+
+            f.getLocation().getNearbyPlayers(settingsHandler.getSetFireRange())
+                    .forEach(player -> player.setFireTicks(fireDuration));
+
             ParticleEffectsManager.getInstance().enfHotBurnExplosion(f.getBlock());
         }
 
     }
 
-    // Quando la fornace è in funzione non puoi aggiungere e/o rimuovere items
     @EventHandler
     public void onFurnaceInventoryClickEvent(InventoryClickEvent event) {
         if (event.getClickedInventory() != null && event.getClickedInventory().getLocation() != null) {
             if (EFManager.getInstance().isEF(event.getClickedInventory().getLocation().toCenterLocation())) {
                 Furnace furnace = (Furnace) event.getClickedInventory().getLocation().getBlock().getState();
-                if (furnace.getCookTime() != 0)
+                if (furnace.getCookTime() != 0 && !event.getSlotType().equals(InventoryType.SlotType.RESULT))
                     event.setCancelled(true);
             }
         }
@@ -90,7 +111,7 @@ public class FurnaceListener implements Listener {
         }
     }
 
-    @EventHandler(priority = EventPriority.LOWEST)
+    @EventHandler(priority = EventPriority.LOWEST, ignoreCancelled = true)
     public void onBlockBreak(BlockBreakEvent event) {
         if (EFManager.getInstance().removeEF(event.getBlock().getLocation().toCenterLocation())) {
             Bukkit.getConsoleSender()
