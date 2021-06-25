@@ -22,9 +22,10 @@ public class FurnaceListener implements Listener {
 
     @EventHandler
     public void onFurnaceSmelt(FurnaceSmeltEvent e) {
+
         Furnace f = (Furnace) e.getBlock().getState();
 
-        if (EFManager.getInstance().isEF(f.getLocation().toCenterLocation())) {
+        if (!EFManager.getInstance().isEF(f.getLocation().toCenterLocation())) return;
 
             Material material = e.getResult().getType();
             ItemStack result = f.getInventory().getResult();
@@ -34,7 +35,7 @@ public class FurnaceListener implements Listener {
                 e.setResult(new ItemStack(material,SettingsHandler.getInstance().getOutputMultiplier(material)));
             else
                 e.setResult(new ItemStack(material, 64 - result.getAmount()));
-        }
+
 
         if (f.getCookTime() == 0 && f.getCookTimeTotal() != 0) {
             Bukkit.getScheduler().scheduleSyncDelayedTask(EnhancedFurnace.getPlugin(EnhancedFurnace.class),
@@ -50,6 +51,11 @@ public class FurnaceListener implements Listener {
     @EventHandler
     public void onFurnaceBurnItem(FurnaceBurnEvent e) {
         Furnace f = (Furnace) e.getBlock().getState();
+
+        if (!EFManager.getInstance().isEF(f.getLocation().toCenterLocation())) return;
+
+        //if (!EFManager.getInstance().isEFActive) e.setCancelled(true); //todo
+
         if (f.getCookTime() == 0) {
             Bukkit.getScheduler().scheduleSyncDelayedTask(EnhancedFurnace.getPlugin(EnhancedFurnace.class),
                     () -> {
@@ -57,18 +63,12 @@ public class FurnaceListener implements Listener {
                         FurnaceStartSmeltEvent event = new FurnaceStartSmeltEvent(furnace);
                         Bukkit.getServer().getPluginManager().callEvent(event);
                     },3L);
-            /*
-            if (event.isCancelled()) {
-                e.setCancelled(true);
-            }
-
-             */
         }
     }
 
     @EventHandler (priority = EventPriority.LOWEST)
     public void onFurnaceStartSmelt(FurnaceStartSmeltEvent e) {
-        Bukkit.getConsoleSender().sendMessage("Chiamato evento FurnaceStartSmeltEvent");
+        // this event is fired only for enhanced furnaces
 
         Furnace f = e.getFurnace();
         ItemStack itemStack = f.getInventory().getSmelting();
@@ -80,8 +80,7 @@ public class FurnaceListener implements Listener {
 
         SettingsHandler settingsHandler = SettingsHandler.getInstance();
 
-        if (EFManager.getInstance().isEF(f.getLocation().toCenterLocation())
-                && new Random().nextDouble() < settingsHandler.getSetFireonBurnProbability()) {
+        if (new Random().nextDouble() < settingsHandler.getSetFireonBurnProbability()) {
 
             int fireDuration = settingsHandler.getFireDuration();
 
