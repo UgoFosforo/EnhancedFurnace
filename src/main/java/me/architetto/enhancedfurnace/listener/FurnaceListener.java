@@ -82,10 +82,12 @@ public class FurnaceListener implements Listener {
 
         if (new Random().nextDouble() < settingsHandler.getSetFireonBurnProbability()) {
 
+
             int fireDuration = settingsHandler.getFireDuration();
 
             f.getLocation().getNearbyPlayers(settingsHandler.getSetFireRange())
                     .forEach(player -> player.setFireTicks(fireDuration));
+
 
             ParticleEffectsManager.getInstance().enfHotBurnExplosion(f.getBlock());
         }
